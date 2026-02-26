@@ -41,13 +41,14 @@ A full settings overlay with persistent preferences via `electron-store`.
 ## Features
 
 - 🎯 **Real-time Usage Tracking** - Monitor both session and weekly usage limits
-- 📊 **Visual Progress Bars** - Clean, gradient progress indicators
-- ⏱️ **Countdown Timers** - Circular timers showing time until reset
+- 📊 **Visual Progress Bars** - Clean, gradient progress indicators with configurable warning thresholds
+- ⏱️ **Countdown Timers** - Circular timers showing time elapsed in current window
 - 🔄 **Auto-refresh** - Updates every 5 minutes automatically
-- 🎨 **Modern UI** - Sleek, draggable widget with dark theme
+- 🎨 **Modern UI** - Sleek, draggable widget with dark theme and rounded corners
 - 🔒 **Secure** - Encrypted credential storage
-- 📍 **Always on Top** - Stays visible across all workspaces
+- 📍 **Always on Top** - User-controlled, stays visible across all workspaces
 - 💾 **System Tray** - Minimizes to tray for easy access
+- ⚙️ **Settings Panel** - Persistent preferences for startup, theme, tray, and thresholds
 
 ## Installation
 
@@ -104,31 +105,32 @@ Right-click the tray icon for:
 - Show/Hide widget
 - Refresh usage data
 - Re-login (if session expires)
-- Settings (coming soon)
+- Settings
 - Exit application
 
 ## Understanding the Display
 
 ### Current Session
-- **Progress Bar** - Shows usage from 0-100%
-- **Timer** - Time remaining until 5-hour session resets
+- **Session Used** - Progress bar showing usage from 0-100%
+- **Elapsed** - Circular timer showing how far through the 5-hour window you are
+- **Resets In** - Countdown until the session window resets
+- **Resets At** - Actual local clock time when the session resets
 - **Color Coding**:
-  - Purple: Normal usage (0-74%)
-  - Orange: High usage (75-89%)
-  - Red: Critical usage (90-100%)
+  - Purple: Normal usage (below warning threshold, default 75%)
+  - Orange: High usage (above warning threshold)
+  - Red: Critical usage (above danger threshold, default 90%)
 
 ### Weekly Limit
-- **Progress Bar** - Shows weekly usage from 0-100%
-- **Timer** - Time remaining until weekly reset (Wednesdays 7:00 AM)
+- **Session Used** - Progress bar showing weekly usage from 0-100%
+- **Elapsed** - Circular timer showing how far through the 7-day window you are
+- **Resets In** - Countdown until weekly reset
+- **Resets At** - Date of weekly reset
 - **Same color coding** as session usage
 
 ## Configuration
 
 ### Auto-start on Windows Boot
-
-1. Press `Win + R`
-2. Type `shell:startup` and press Enter
-3. Create a shortcut to the widget executable in this folder
+Enable the **Launch at startup** toggle in the Settings panel (⚙️ icon in the title bar).
 
 ### Custom Refresh Interval
 
@@ -214,7 +216,7 @@ DEBUG_LOG=1 npm start
 - [ ] macOS support
 - [ ] Linux support
 - [x] Custom themes
-- [x] Notification alerts at usage thresholds
+- [ ] Notification alerts at usage thresholds
 - [x] Remember window position
 - [x] Settings panel
 - [ ] Usage history graphs
