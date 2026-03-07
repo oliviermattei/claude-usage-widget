@@ -24,6 +24,13 @@ A beautiful, standalone desktop widget for **Windows and macOS** that displays y
 
 ## What's New
 
+### v1.5.1
+
+#### 💡 Extra Usage Status Indicator
+The Extra Usage row now shows an **ON** or **OFF** badge indicating whether extra usage is currently enabled on your account. When off, the bar correctly shows 0% and the badge is grey. When on, the badge is green alongside your spend and balance data.
+
+---
+
 ### v1.5.0
 
 #### 🔔 Update Notifications
