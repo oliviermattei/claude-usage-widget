@@ -252,6 +252,14 @@ ipcMain.handle('get-app-version', () => {
   return app.getVersion();
 });
 
+// Show a native OS desktop notification (Windows toast, macOS NC, Linux libnotify)
+ipcMain.on('show-notification', (event, { title, body }) => {
+  if (Notification.isSupported()) {
+    const n = new Notification({ title, body, silent: false });
+    n.show();
+  }
+});
+
 // Settings handlers
 ipcMain.handle('get-settings', () => {
   return {
@@ -262,7 +270,8 @@ ipcMain.handle('get-settings', () => {
     warnThreshold: store.get('settings.warnThreshold', 75),
     dangerThreshold: store.get('settings.dangerThreshold', 90),
     timeFormat: store.get('settings.timeFormat', '12h'),
-    weeklyDateFormat: store.get('settings.weeklyDateFormat', 'date')
+    weeklyDateFormat: store.get('settings.weeklyDateFormat', 'date'),
+    usageAlerts: store.get('settings.usageAlerts', true)
   };
 });
 
@@ -275,6 +284,7 @@ ipcMain.handle('save-settings', (event, settings) => {
   store.set('settings.dangerThreshold', settings.dangerThreshold);
   store.set('settings.timeFormat', settings.timeFormat);
   store.set('settings.weeklyDateFormat', settings.weeklyDateFormat);
+  store.set('settings.usageAlerts', settings.usageAlerts);
 
   // openAtLogin is not supported on Linux — Electron silently ignores it.
   // Skip the call entirely to avoid misleading behaviour.

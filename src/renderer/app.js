@@ -71,7 +71,8 @@ const elements = {
     updateBannerText: document.getElementById('updateBannerText'),
     updateBannerDismiss: document.getElementById('updateBannerDismiss'),
     settingsVersionLabel: document.getElementById('settingsVersionLabel'),
-    settingsUpdateLink: document.getElementById('settingsUpdateLink')
+    settingsUpdateLink: document.getElementById('settingsUpdateLink'),
+    usageAlertsToggle: document.getElementById('usageAlertsToggle')
 };
 
 // Initialize
@@ -473,11 +474,76 @@ function updateUI(data) {
     if (isExpanded) refreshExtraTimers();
     resizeWidget();
     startCountdown();
+    checkUsageAlerts(data);
+}
+
+// Fire OS desktop notifications when usage crosses warn/danger thresholds.
+// Only fires once per threshold crossing per session window — not on every refresh.
+function checkUsageAlerts(data) {
+    const settings = window._cachedSettings || {};
+    if (!settings.usageAlerts) return;
+
+    const sessionPct = data.five_hour?.utilization || 0;
+    const weeklyPct = data.seven_day?.utilization || 0;
+
+    // Reset alert flags when a session window resets (utilization drops back low)
+    if (sessionPct < warnThreshold) {
+        alertFired.session_warn = false;
+        alertFired.session_danger = false;
+    }
+    if (weeklyPct < warnThreshold) {
+        alertFired.weekly_warn = false;
+        alertFired.weekly_danger = false;
+    }
+
+    // Current Session — danger threshold (check first, higher priority)
+    if (sessionPct >= dangerThreshold && !alertFired.session_danger) {
+        alertFired.session_danger = true;
+        alertFired.session_warn = true; // suppress warn if we jumped straight to danger
+        window.electronAPI.showNotification(
+            'Claude Usage Widget',
+            `Current Session usage is at ${Math.round(sessionPct)}% — running low`
+        );
+    // Current Session — warn threshold
+    } else if (sessionPct >= warnThreshold && !alertFired.session_warn) {
+        alertFired.session_warn = true;
+        window.electronAPI.showNotification(
+            'Claude Usage Widget',
+            `Current Session usage has reached ${Math.round(sessionPct)}%`
+        );
+    }
+
+    // Weekly Limit — danger threshold
+    if (weeklyPct >= dangerThreshold && !alertFired.weekly_danger) {
+        alertFired.weekly_danger = true;
+        alertFired.weekly_warn = true;
+        window.electronAPI.showNotification(
+            'Claude Usage Widget',
+            `Weekly Limit usage is at ${Math.round(weeklyPct)}% — running low`
+        );
+    // Weekly Limit — warn threshold
+    } else if (weeklyPct >= warnThreshold && !alertFired.weekly_warn) {
+        alertFired.weekly_warn = true;
+        window.electronAPI.showNotification(
+            'Claude Usage Widget',
+            `Weekly Limit usage has reached ${Math.round(weeklyPct)}%`
+        );
+    }
 }
 
 // Track if we've already triggered a refresh for expired timers
 let sessionResetTriggered = false;
 let weeklyResetTriggered = false;
+
+// Track which usage alert thresholds have already fired this window
+// Prevents repeat notifications on every refresh cycle
+// Keys: 'session_warn', 'session_danger', 'weekly_warn', 'weekly_danger'
+const alertFired = {
+    session_warn: false,
+    session_danger: false,
+    weekly_warn: false,
+    weekly_danger: false
+};
 
 function refreshTimers() {
     if (!latestUsageData) return;
@@ -745,6 +811,7 @@ async function loadSettings() {
     elements.dangerThreshold.value = settings.dangerThreshold;
     elements.timeFormat.value = settings.timeFormat || '12h';
     elements.weeklyDateFormat.value = settings.weeklyDateFormat || 'date';
+    elements.usageAlertsToggle.checked = settings.usageAlerts !== false;
 
     warnThreshold = settings.warnThreshold;
     dangerThreshold = settings.dangerThreshold;
@@ -775,7 +842,8 @@ async function saveSettings() {
         warnThreshold: warn,
         dangerThreshold: danger,
         timeFormat: elements.timeFormat.value || '12h',
-        weeklyDateFormat: elements.weeklyDateFormat.value || 'date'
+        weeklyDateFormat: elements.weeklyDateFormat.value || 'date',
+        usageAlerts: elements.usageAlertsToggle.checked
     };
     await window.electronAPI.saveSettings(settings);
     window._cachedSettings = settings;
