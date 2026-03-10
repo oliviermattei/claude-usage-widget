@@ -1409,3 +1409,14 @@ body.theme-light .compact-pct {
     color: rgba(0,0,0,0.75);
     text-shadow: none;
 }
+
+/* Pulse animation when usage hits 100% */
+@keyframes pulse-danger {
+    0%   { opacity: 1; }
+    50%  { opacity: 0.35; }
+    100% { opacity: 1; }
+}
+
+.progress-fill.pulse {
+    animation: pulse-danger 1.2s ease-in-out infinite;
+}

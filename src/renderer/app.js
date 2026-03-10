@@ -547,7 +547,7 @@ function updateUI(data) {
 // Only fires once per threshold crossing per session window — not on every refresh.
 function checkUsageAlerts(data) {
     const settings = window._cachedSettings || {};
-    if (!settings.usageAlerts) return;
+    if (settings.usageAlerts === false) return;
 
     const sessionPct = data.five_hour?.utilization || 0;
     const weeklyPct = data.seven_day?.utilization || 0;
@@ -705,8 +705,9 @@ function refreshTimers() {
     const weeklyDateFormat = settings.weeklyDateFormat || 'date';
 
     // Session data
-    const sessionUtilization = latestUsageData.five_hour?.utilization || 0;
     const sessionResetsAt = latestUsageData.five_hour?.resets_at;
+    const sessionExpired = sessionResetsAt && (new Date(sessionResetsAt) - new Date()) <= 0;
+    const sessionUtilization = sessionExpired ? 100 : (latestUsageData.five_hour?.utilization || 0);
 
     // Check if session timer has expired and we need to refresh
     if (sessionResetsAt) {
@@ -740,8 +741,9 @@ function refreshTimers() {
     elements.sessionResetsAt.style.opacity = sessionResetsAt ? '1' : '0.4';
 
     // Weekly data
-    const weeklyUtilization = latestUsageData.seven_day?.utilization || 0;
     const weeklyResetsAt = latestUsageData.seven_day?.resets_at;
+    const weeklyExpired = weeklyResetsAt && (new Date(weeklyResetsAt) - new Date()) <= 0;
+    const weeklyUtilization = weeklyExpired ? 100 : (latestUsageData.seven_day?.utilization || 0);
 
     // Check if weekly timer has expired and we need to refresh
     if (weeklyResetsAt) {
@@ -789,8 +791,10 @@ function updateProgressBar(progressElement, percentageElement, value, isWeekly =
     progressElement.style.width = `${percentage}%`;
     percentageElement.textContent = `${Math.round(percentage)}%`;
 
-    progressElement.classList.remove('warning', 'danger');
-    if (percentage >= dangerThreshold) {
+    progressElement.classList.remove('warning', 'danger', 'pulse');
+    if (percentage >= 100) {
+        progressElement.classList.add('danger', 'pulse');
+    } else if (percentage >= dangerThreshold) {
         progressElement.classList.add('danger');
     } else if (percentage >= warnThreshold) {
         progressElement.classList.add('warning');
