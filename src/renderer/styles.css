@@ -1248,29 +1248,26 @@ body.theme-light .settings-select {
 /* Collapse chevron — left edge of normal view, vertically centered */
 .compact-collapse-btn {
     position: absolute;
-    left: 0;
+    left: 2px;
     top: 50%;
     transform: translateY(-50%);
     width: 14px;
-    height: 36px;
-    background: rgba(255,255,255,0.04);
+    height: 28px;
+    background: none;
     border: none;
-    border-right: 1px solid rgba(255,255,255,0.08);
-    border-radius: 10px 0 0 10px;
-    color: #404055;
+    color: #505050;
     font-size: 9px;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.2s;
+    transition: color 0.2s;
     padding: 0;
     z-index: 5;
 }
 
 .compact-collapse-btn:hover {
-    background: rgba(255,255,255,0.1);
-    color: #a0a0b0;
+    color: #a0a0a0;
 }
 
 /* Compact content container */
@@ -1278,36 +1275,33 @@ body.theme-light .settings-select {
     position: relative;
     display: flex;
     align-items: center;
-    padding: 10px 18px 10px 10px;
+    padding: 10px 22px;
     flex: 1;
 }
 
 /* Expand chevron — right edge of compact view */
 .compact-expand-btn {
     position: absolute;
-    right: 0;
+    right: 2px;
     top: 50%;
     transform: translateY(-50%);
     width: 14px;
-    height: 36px;
-    background: rgba(255,255,255,0.04);
+    height: 28px;
+    background: none;
     border: none;
-    border-left: 1px solid rgba(255,255,255,0.08);
-    border-radius: 0 10px 10px 0;
-    color: #404055;
+    color: #505050;
     font-size: 9px;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.2s;
+    transition: color 0.2s;
     padding: 0;
     z-index: 5;
 }
 
 .compact-expand-btn:hover {
-    background: rgba(255,255,255,0.1);
-    color: #a0a0b0;
+    color: #a0a0a0;
 }
 
 /* Compact rows */
@@ -1336,11 +1330,14 @@ body.theme-light .settings-select {
 
 .compact-bar-wrap {
     flex: 1;
+    display: flex;
+    align-items: center;
 }
 
 .compact-bar-bg {
     position: relative;
     height: 14px;
+    width: 140px;
     background: rgba(255,255,255,0.08);
     border-radius: 4px;
     overflow: hidden;
@@ -1367,15 +1364,16 @@ body.theme-light .settings-select {
 
 .compact-pct {
     position: absolute;
-    right: 5px;
+    left: 50%;
     top: 50%;
-    transform: translateY(-50%);
+    transform: translate(-50%, -50%);
     font-size: 9px;
     font-weight: 700;
     color: rgba(255,255,255,0.9);
     font-variant-numeric: tabular-nums;
     text-shadow: 0 0 4px rgba(0,0,0,0.6);
     pointer-events: none;
+    white-space: nowrap;
 }
 
 /* Compact settings overlay body */
@@ -1394,14 +1392,11 @@ body.theme-light .settings-select {
 /* Light theme compact */
 body.theme-light .compact-collapse-btn,
 body.theme-light .compact-expand-btn {
-    background: rgba(0,0,0,0.04);
-    border-color: rgba(0,0,0,0.1);
     color: #b0b0c0;
 }
 
 body.theme-light .compact-collapse-btn:hover,
 body.theme-light .compact-expand-btn:hover {
-    background: rgba(0,0,0,0.1);
     color: #606080;
 }
 

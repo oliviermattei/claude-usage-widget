@@ -264,7 +264,7 @@ ipcMain.on('show-notification', (event, { title, body }) => {
 // Compact: 290px wide, normal: 530px wide. Height stays managed by renderer.
 ipcMain.on('set-compact-mode', (event, compact) => {
   if (mainWindow) {
-    const width = compact ? 290 : WIDGET_WIDTH;
+    const width = compact ? 250 : WIDGET_WIDTH;
     const bounds = mainWindow.getBounds();
     mainWindow.setBounds({ x: bounds.x, y: bounds.y, width, height: bounds.height });
   }
