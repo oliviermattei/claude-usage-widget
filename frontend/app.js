@@ -222,7 +222,8 @@ function setupEventListeners() {
     elements.expandToggle.addEventListener('click', () => {
         isExpanded = !isExpanded;
         elements.expandArrow.classList.toggle('expanded', isExpanded);
-        elements.expandSection.style.display = isExpanded ? 'block' : 'none';
+        const hasExtraRows = elements.extraRows.children.length > 0;
+        elements.expandSection.style.display = (isExpanded && hasExtraRows) ? 'block' : 'none';
         if (graphVisible) {
             loadChart();
         }
@@ -534,13 +535,8 @@ function buildExtraRows(data) {
         count++;
     }
 
-    // Hide toggle if no extra rows
-    elements.expandToggle.style.display = count > 0 ? 'flex' : 'none';
-    if (count === 0 && isExpanded) {
-        isExpanded = false;
-        elements.expandArrow.classList.remove('expanded');
-        elements.expandSection.style.display = 'none';
-    }
+    // Always show the expand toggle — extra rows or graph may be behind it
+    elements.expandToggle.style.display = 'flex';
 
     return count;
 }
