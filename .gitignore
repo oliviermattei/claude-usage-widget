@@ -30,8 +30,11 @@ yarn-error.log*
 .env.local
 .env.*.local
 
-# Electron
-*.electron/
+# Rust/Tauri build artifacts
+# Le target-dir Cargo est redirigé vers dist/tauri/ via src-tauri/.cargo/config.toml
+# Les bundles (msi, nsis, exe) sont dans dist/tauri/release/bundle/
+# Safety net au cas où .cargo/config.toml serait contourné :
+src-tauri/target/
 
 # Cache
 .cache/

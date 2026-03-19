@@ -1,97 +1,26 @@
 {
   "name": "claude-usage-widget",
   "version": "1.7.0",
-  "description": "Desktop widget for Claude.ai usage monitoring",
-  "main": "main.js",
+  "description": "Desktop widget for Claude.ai usage monitoring (Tauri)",
+  "private": true,
   "scripts": {
-    "start": "electron .",
-    "build": "electron-builder",
-    "build:win": "electron-builder --win",
-    "dev": "cross-env NODE_ENV=development electron .",
-    "build:mac": "electron-builder --mac",
-    "build:linux": "electron-builder --linux"
+    "tauri": "cargo tauri",
+    "tauri:dev": "cargo tauri dev",
+    "tauri:build": "cargo tauri build"
   },
   "keywords": [
     "claude",
     "usage",
     "widget",
-    "electron"
+    "tauri"
   ],
   "author": "Slavomir Durej",
   "license": "MIT",
-  "copyright": "Copyright \u00a9 2025 Slavomir Durej",
-  "engines": {
-    "node": ">=18.0.0",
-    "npm": ">=9.0.0"
-  },
+  "copyright": "Copyright © 2025 Slavomir Durej",
   "devDependencies": {
-    "cross-env": "^7.0.3",
-    "electron": "^28.0.0",
-    "electron-builder": "^24.9.1"
+    "@tauri-apps/cli": "^2"
   },
   "dependencies": {
-    "chart.js": "^4.5.1",
-    "electron-store": "^8.1.0"
-  },
-  "build": {
-    "appId": "com.claudeusage.widget",
-    "productName": "Claude-Usage-Widget",
-    "copyright": "Copyright \u00a9 2025 Slavomir Durej",
-    "publish": null,
-    "win": {
-      "target": [
-        "nsis",
-        "portable"
-      ],
-      "icon": "assets/icon.ico"
-    },
-    "portable": {
-      "artifactName": "${productName}-${version}-win-portable.${ext}",
-      "unpackDirName": "claude-usage-widget"
-    },
-    "nsis": {
-      "oneClick": false,
-      "allowToChangeInstallationDirectory": true,
-      "createDesktopShortcut": true,
-      "createStartMenuShortcut": true,
-      "artifactName": "${productName}-${version}-win-Setup.${ext}"
-    },
-    "files": [
-      "**/*",
-      "!**/*.ts",
-      "!*.md"
-    ],
-    "mac": {
-      "target": [
-        {
-          "target": "dmg",
-          "arch": [
-            "arm64",
-            "x64"
-          ]
-        }
-      ],
-      "icon": "assets/icon.icns",
-      "extendInfo": {
-        "NSHumanReadableCopyright": "Copyright \u00a9 2025 Slavomir Durej"
-      }
-    },
-    "dmg": {
-      "artifactName": "${productName}-${version}-macOS-${arch}.dmg"
-    },
-    "linux": {
-      "target": [
-        {
-          "target": "AppImage",
-          "arch": [
-            "x64",
-            "arm64"
-          ]
-        }
-      ],
-      "icon": "assets/logo.png",
-      "category": "Utility",
-      "artifactName": "${productName}-${version}-linux-${arch}.${ext}"
-    }
+    "chart.js": "^4.5.1"
   }
 }

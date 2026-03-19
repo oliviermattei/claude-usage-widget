@@ -3,85 +3,53 @@
 ## For End Users
 
 ### Option 1: Download Installer (Recommended)
-1. Download `Claude-Usage-Widget-Setup.exe` from releases
+
+**Windows:**
+1. Download `Claude-Usage-Widget-*.exe` or `.msi` from [Releases](../../releases)
 2. Run the installer
 3. Launch from Start Menu
-4. Login when prompted
+
+**macOS:**
+1. Download `Claude-Usage-Widget-*-arm64.dmg` (Apple Silicon) or `*-x64.dmg` (Intel)
+2. Open the DMG and drag to Applications
+3. Run `xattr -cr /Applications/Claude\ Usage\ Widget.app` if Gatekeeper blocks it
+
+**Linux:**
+1. Download `Claude-Usage-Widget-*.AppImage` or `.deb`
+2. AppImage: `chmod +x *.AppImage && ./*.AppImage`
+3. Deb: `sudo dpkg -i *.deb`
 
 ### Option 2: Build from Source
 ```bash
-# Install Node.js from https://nodejs.org (if not already installed)
+# Install Rust: https://rustup.rs
+# Install Node.js: https://nodejs.org
+# Install platform dependencies: https://v2.tauri.app/start/prerequisites/
 
-# Clone or download this project
 cd claude-usage-widget
-
-# Install dependencies
 npm install
-
-# Run the widget
-npm start
-
-# Or build installer
-npm run build:win
+cargo tauri build
 ```
 
 ## First Time Setup
 
-1. **Launch the widget** - A frameless window appears
-2. **Click "Login to Claude"** - Browser window opens
-3. **Login to Claude.ai** - Use your normal credentials
-4. **Widget activates** - Usage data appears automatically
-5. **Minimize to tray** - Click the minus icon
+1. **Launch the widget** — A frameless window appears
+2. **Click "Manual"** — Paste your Claude.ai session key
+3. **Widget activates** — Usage data appears automatically
+4. **Minimize to tray** — Click the minus icon
 
 ## System Requirements
 
-- **OS:** Windows 10 or later (64-bit)
-- **RAM:** 200 MB
-- **Disk:** 100 MB
+- **OS:** Windows 10+, macOS 10.15+, or Linux (glibc 2.31+)
+- **RAM:** ~50 MB
+- **Disk:** ~20 MB
 - **Internet:** Required for Claude.ai API
-
-## What Gets Installed
-
-- Executable: `%LOCALAPPDATA%\Programs\claude-usage-widget\`
-- Settings: `%APPDATA%\claude-usage-widget\` (encrypted)
-- Start Menu shortcut
-- Desktop shortcut (optional)
-
-## Uninstallation
-
-**Windows:**
-1. Settings → Apps → Claude Usage Widget → Uninstall
-2. Or run `Uninstall Claude Usage Widget.exe` from install directory
-
-**Manual cleanup:**
-```
-%APPDATA%\claude-usage-widget\
-%LOCALAPPDATA%\Programs\claude-usage-widget\
-```
-
-## Troubleshooting Install Issues
-
-### "Windows protected your PC"
-1. Click "More info"
-2. Click "Run anyway"
-3. This is normal for unsigned apps
-
-### Installer won't run
-- Ensure you have admin rights
-- Disable antivirus temporarily
-- Download again (file may be corrupted)
-
-### Can't find after install
-- Check Start Menu → All Apps
-- Search for "Claude Usage Widget"
-- Check Desktop for shortcut
 
 ## Security Notes
 
-✅ **Your data stays local** - credentials stored encrypted on your machine
-✅ **Open source** - code is available for review
-✅ **No telemetry** - no usage data sent anywhere
-✅ **Direct API** - only communicates with claude.ai
+- Your data stays local — credentials stored securely on your machine
+- Open source — code is available for review
+- No telemetry — no usage data sent anywhere
+- Direct API — only communicates with claude.ai
 
 ---
 

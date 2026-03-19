@@ -45,14 +45,9 @@
 
 ## Temporary Solution
 
-Until you create custom icons, you can use:
-- Placeholder icon.ico from any Electron template
-- Or remove icon references from `main.js` temporarily
-
-```javascript
-// In main.js, comment out:
-// tray = new Tray(path.join(__dirname, 'assets/tray-icon.png'));
-```
+Until you create custom icons, you can use placeholder icons.
+The app will still launch without custom icons but the tray and taskbar
+will show a generic icon.
 
 ## Online Tools
 
